@@ -1,6 +1,5 @@
-with open('input.txt', 'r') as f:
-    input_data = f.read()
-    a = input_data.splitlines()
+with open('input.txt') as f:
+    a = f.readlines()
 
 horizontal, depth, aim = 0, 0, 0
 
