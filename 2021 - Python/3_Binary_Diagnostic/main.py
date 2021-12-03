@@ -29,8 +29,6 @@ print(f"Part1: {int(epsilon_rate_string, 2) * int(gamma_rate_string, 2)}")  # 40
 
 # Part 2
 
-# extract nth elements of the lists in list of lists
-
 
 def extract_nth(lst: list, pos: int) -> list:
     return [i[pos] for i in lst]
@@ -38,13 +36,36 @@ def extract_nth(lst: list, pos: int) -> list:
 
 def calc_most_common(lst: list, oxygen=True) -> str:
     r = Counter(lst).most_common(2)
-    if r[0][1] == r[1][1] and oxygen:
-        return "1"
-    elif r[0][1] == r[1][1] and not oxygen:
-        return "0"
+    if len(r) != 1:
+        if r[0][1] == r[1][1] and oxygen:
+            return "1"
+        elif r[0][1] == r[1][1] and not oxygen:
+            return "0"
     return r[0][0]
 
 
+def calc_least_common(lst: list, oxygen=True) -> str:
+    r = Counter(lst).most_common(2)
+    if len(r) != 1:
+        if r[0][1] == r[1][1] and oxygen:
+            return "1"
+        elif r[0][1] == r[1][1] and not oxygen:
+            return "0"
+    return r[1][0]
 
 
+a = diagnostic
+for n in range(12):
+    if len(a) > 1:
+        b = extract_nth(a, n)
+        a = [i for i in a if calc_most_common(b) == i[n]]
+
+u = diagnostic
+for n in range(12):
+    if len(u) > 1:
+        b = extract_nth(u, n)
+        u = [i for i in u if calc_least_common(b, False) == i[n]]
+
+
+print(f"Part2: {int(*a, 2) * int(*u, 2)}")
 
