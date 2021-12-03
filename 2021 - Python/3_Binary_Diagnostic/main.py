@@ -26,4 +26,9 @@ epsilon_rate_bin = ["1" if x == "0" else "0" for x in gamma_rate_bin]
 epsilon_rate_string = "".join(epsilon_rate_bin)
 
 # Part 1
-print(int(epsilon_rate_string, 2) * int(gamma_rate_string, 2))
+print(f"Part1: {int(epsilon_rate_string, 2) * int(gamma_rate_string, 2)}")
+
+# Part 2
+
+
+
