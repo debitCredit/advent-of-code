@@ -42,8 +42,17 @@ def process_boards(draw: list, boards: list) -> tuple:
                 return d, scores[d], i
 
 
-d, m, b = process_boards(draw, boards)
+def process_board(draw, board):
+    scores = {}
+    scores_so_far = []
+    for d in draw:
+        scores_so_far.append(d)
+        scores[d] = np.asarray(np.in1d(board, scores_so_far)).reshape((5, 5))
+        if check_if_won(scores[d]):
+            return d, scores[d]
 
+
+d, m, b = process_boards(draw, boards)
 sum_of_false = 0
 
 for j in range(5):
@@ -52,3 +61,31 @@ for j in range(5):
             sum_of_false += boards[b][j][i]
 
 print(f"Part 1: {sum_of_false * d}")  # 21607
+
+
+def process_boards_last(draw: list, boards: list) -> dict:
+    scores = {}
+    scores_so_far = []
+    for b in range(len(boards)):
+        for d in draw:
+            scores_so_far.append(d)
+            h = np.asarray(np.in1d(boards[b], scores_so_far)).reshape((5, 5))
+            if check_if_won(h):
+                scores[b] = len(scores_so_far)
+                break
+        scores_so_far.clear()
+    return scores
+
+
+dyt = dict(sorted(process_boards_last(draw, boards).items(), key=lambda item: item[1], reverse=True))
+
+final_board = next(iter(dyt.items()))[0]
+final_guess = draw[next(iter(dyt.items()))[1]-1]
+pb = process_board(draw, boards[final_board])[1]
+
+sum_of_false = 0
+for j in range(5):
+    for i in range(5):
+        if not pb[j][i]:
+            sum_of_false += boards[final_board][j][i]
+print(f"Part 2: {sum_of_false * final_guess}")
