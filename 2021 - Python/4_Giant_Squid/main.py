@@ -1,9 +1,22 @@
 import numpy as np
+import numpy.ma as ma
 
+boards = []
 with open('input.txt') as f:
-    draw = list(f.readline().strip().split(","))
+    draw = list(next(f).strip().split(","))
+    counter = 0
+    for line in f:
+        if not line == "\n" and counter == 0:
+            a = np.array(list(map(int, line.split())))
+            counter += 1
+        elif not line == "\n" and counter < 4:
+            a = np.vstack((a, np.array(list(map(int, line.split())))))
+            counter += 1
+        elif not line == "\n" and counter == 4:
+            a = np.vstack((a, np.array(list(map(int, line.split())))))
+            boards.append(a)
+            counter += 1
+        else:
+            counter = 0
 
-
-a = np.zeros((5, 5), dtype=int)
-
-# Processing the file to create a list of boards in np arrays
+print(boards)
