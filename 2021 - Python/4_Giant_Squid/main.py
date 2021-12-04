@@ -42,7 +42,7 @@ def process_boards(draw: list, boards: list) -> tuple:
                 return d, scores[d], i
 
 
-def process_board(draw, board):
+def process_board(draw: list, board: np.ndarray) -> tuple:
     scores = {}
     scores_so_far = []
     for d in draw:
