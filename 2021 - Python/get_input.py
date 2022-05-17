@@ -10,6 +10,8 @@ if len(sys.argv) != 2:
 
 load_dotenv()
 cookie = os.getenv("COOKIE")
+
+# Day has to be in '01' format to match the Github folder sorting requirements
 day = sys.argv[1]
 headers = {'session': cookie}
 url = f'https://adventofcode.com/2021/day/{int(day)}/input'
