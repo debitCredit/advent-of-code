@@ -10,9 +10,9 @@ if len(sys.argv) != 2:
 
 load_dotenv()
 cookie = os.getenv("COOKIE")
-day = int(sys.argv[1])
+day = sys.argv[1]
 headers = {'session': cookie}
-url = f'https://adventofcode.com/2021/day/{day}/input'
+url = f'https://adventofcode.com/2021/day/{int(day)}/input'
 
 session = requests.Session()
 resp = session.get(url, cookies=headers)
