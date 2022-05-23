@@ -1,0 +1,5 @@
+My Advent of Code submissions. This is the original code I used, with small modifications after-the-fact. As such, they are probably not as efficient or as elegant as they should be.
+
+Part of the idea of AoC is that you have to make some design choices to solve Part 1 before you get to see the instructions for Part 2. So there is a tension of wanting the solution to Part 1 to provide components that can be re-used in Part 2, without falling victim to [YAGNI](https://en.wikipedia.org/wiki/You_aren't_gonna_need_it). In this notebook I won't refactor the code for Part 1 after I see what is requested in Part 2 (although I may edit the code for clarity, without changing the initial approach).
+
+From day 11 I'll be using helper functions and Classes from my own pyaoc library. At some point I'll refactor this library, introduce tests, CI/CD and release to the community.
