@@ -1,3 +1,5 @@
+# TODO: Refactor, introduce tests, set up CI/CD
+
 import re
 
 Point = tuple[int, int]  # (x, y) points on a grid
