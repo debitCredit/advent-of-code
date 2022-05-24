@@ -29,3 +29,4 @@ def dfs(caves, cave, seen, part2=False):
 
 print(dfs(cave_network, "start", {"start"}))
 print(dfs(cave_network, "start", {"start"}, True))
+
