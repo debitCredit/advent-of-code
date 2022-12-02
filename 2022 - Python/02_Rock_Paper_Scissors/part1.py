@@ -29,7 +29,6 @@ def determine_winner(game_list, first, second):
     return second not in beating
 
 for l in ll2:
-    c += 1
     score += points[l[1]]
     if l[0] == l[1]:
         score += 3
