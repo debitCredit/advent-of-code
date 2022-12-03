@@ -2,6 +2,7 @@ import re
 import os
 import sys
 import functools
+import string
 from collections import defaultdict
 from collections import Counter
 
@@ -11,14 +12,16 @@ file = os.path.join(sys.path[0], "input.txt")
 
 ll = [x for x in open(file).read().strip().split('\n')]
 
-print(ll)
-
 c = 0
 
-# for i in range(len(ll)):
+# Generator to yield 3 items from a list at a time.
+def chunks(l, n):
+    for i in range(0, len(l), n):
+        yield l[i:i+n]
 
-# for i in range(len(ll)-1):
+chunked = list(chunks(ll, 3))
 
-# for l in ll:
+for l in chunked:
+    c += string.ascii_letters.index(*set.intersection(*map(set, l))) + 1 
 
 print(c)
