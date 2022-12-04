@@ -9,16 +9,14 @@ from collections import Counter
 file = os.path.join(sys.path[0], "input.txt")
 # file = os.path.join(sys.path[0], "test_input.txt")
 
-ll = [x for x in open(file).read().strip().split('\n')]
-
-print(ll)
+ll = [[[int(i) for i in y.split("-")] for y in x.split(",")] for x in open(file).read().strip().split('\n')]
 
 c = 0
 
-# for i in range(len(ll)):
-
-# for i in range(len(ll)-1):
-
-# for l in ll:
+for l in ll:
+    first_elf = set(range(l[0][0], l[0][1]+1))
+    second_elf = set(range(l[1][0], l[1][1]+1))
+    if not first_elf.isdisjoint(second_elf):
+        c += 1
 
 print(c)
