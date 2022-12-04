@@ -2,7 +2,6 @@ import re
 import os
 import sys
 import functools
-import string
 from collections import defaultdict
 from collections import Counter
 
@@ -12,14 +11,14 @@ file = os.path.join(sys.path[0], "input.txt")
 
 ll = [x for x in open(file).read().strip().split('\n')]
 
+print(ll)
+
 c = 0
 
-def split_list(l: list):
-    middle_index = len(l) // 2
-    return [l[:middle_index], l[middle_index:]]
+# for i in range(len(ll)):
 
-for l in ll:
-    b = set(split_list(l)[0]) & set(split_list(l)[1])
-    c += string.ascii_letters.index(*b) + 1
+# for i in range(len(ll)-1):
+
+# for l in ll:
 
 print(c)
