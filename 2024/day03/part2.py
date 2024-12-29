@@ -1,9 +1,15 @@
-# file = "test_input.txt"
-file = "input.txt"
+import re
+
+file = "test_input.txt"
+# file = "input.txt"
 
 with open(file) as f:
-  for line in f:
-    pass
+    text = f"do(){f.read()}don't()"
 
+total = sum(
+    int(x) * int(y) 
+    for section in re.findall(r"do\(\)(.*?)don't\(\)", text, re.DOTALL)
+    for x, y in re.findall(r'mul\((\d+),(\d+)\)', section)
+)
 
-# print(total_part1)
+print(total)
