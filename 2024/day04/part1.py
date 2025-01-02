@@ -18,6 +18,4 @@ for row in range(len(grid)):
           count += 1
 
 
-
-
 print(count)
