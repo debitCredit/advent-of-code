@@ -13,8 +13,6 @@ for i in text:
   else:
     updates.append(i)
 
-# print(f"{updates=}")
-
 for update in updates:
   numbers = [x for x in update.split(",")]
   pairs = [[numbers[i], numbers[i+1]] for i in range(len(numbers)-1)]
