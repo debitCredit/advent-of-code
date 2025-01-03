@@ -3,8 +3,7 @@ from itertools import cycle
 # file = "test_input.txt"
 file = "input.txt"
 
-directions = {"^": (-1, 0), ">": (0, 1), "v": (1, 0), "<": (0, -1)}
-direction_values = cycle(directions.values())
+direction_values = cycle([(-1, 0), (0, 1), (1, 0), (0, -1)])
 
 with open(file) as f:
   grid = f.read().splitlines()
@@ -12,7 +11,7 @@ with open(file) as f:
 
 for row in range(len(grid)):
   for col in range(len(grid[0])):
-    if grid[row][col] in directions:
+    if grid[row][col] == "^":
       current_pos = (row, col)
       break
       
