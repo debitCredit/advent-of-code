@@ -54,6 +54,7 @@ def explore_paths(start_pos):
 
 starting_pos = {(row, col) for row in range(rows) for col in range(cols) if grid[row][col] == 0}
 
-total = sum(len(explore_paths(start)) for start in starting_pos)
+paths = [explore_paths(start) for start in starting_pos]
+total = sum(len(p) for p in paths)
 
 print(total)
