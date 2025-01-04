@@ -36,9 +36,7 @@ def compact(unpacked: list) -> list:
 def checksum_calc(compacted: list) -> int:
   checksum = 0
   for i, data in enumerate(compacted):
-    if compacted[i] == ".":
-      return checksum
-    else:
+    if compacted[i] != ".":
       checksum += i * data
   return checksum
 
