@@ -49,5 +49,4 @@ for key in result.keys():
   for pair in result[key]:
     antinodes.update(_calc_antinodes(pair))
 
-antinodes_validated = {antinode for antinode in antinodes if _validate_antinode(antinode)}
 print(len(antinodes))
