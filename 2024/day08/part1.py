@@ -26,12 +26,12 @@ def _calc_antinodes(pair: tuple) -> tuple:
     diff_x = bx - ax
     diff_y = by - ay
     
-    a1 = ax - diff_x
-    b1 = bx + diff_x
-    a2 = ay - diff_y
-    b2 = by + diff_y
-    
-    return ((a1, a2), (b1, b2))
+    x1 = ax - diff_x
+    y1 = ay - diff_y
+    x2 = bx + diff_x
+    y2 = by + diff_y
+
+    return ((x1, y1), (x2, y2))
 
 
 def _validate_antinode(antinode: tuple) -> bool:
