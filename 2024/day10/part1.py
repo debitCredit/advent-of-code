@@ -9,13 +9,6 @@ with open(file) as f:
 
 rows, cols = len(grid), len(grid[0])
 
-starting_pos = set()
-
-for row in range(rows):
-  for col in range(cols):
-    if grid[row][col] == 0:
-      starting_pos.add((row, col))
-
 def get_next_positions(pos, current_value):
     row, col = pos
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
