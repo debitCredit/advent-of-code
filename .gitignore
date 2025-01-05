@@ -2,3 +2,10 @@
 /2022 - Python/_template
 input.txt
 test_input.txt
+*.egg-info/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
