@@ -8,38 +8,35 @@ with open(file) as f:
 
 
 def find_regions(grid: Grid) -> list[set[GridPoint]]:
-  regions: list[set[GridPoint]] = []
-  visited: set[GridPoint] = set()
-
-  for point in grid:
-    if point in visited:
-      continue
+    regions = []
+    visited = set()
     
-    # Identified new region
-    region = set()
-    stack = [point]
+    def flood_fill(start: GridPoint) -> set[GridPoint]:
+        region = set()
+        value = grid[start]
+        stack = [start]
+        
+        while stack:
+            curr = stack.pop()
+            if curr not in region:
+                region.add(curr)
+                stack.extend(
+                    n for n in neighbors(curr, num_dirs=4)
+                    if grid.get(n) == value and n not in region
+                )
+        return region
 
-    while stack:
-      curr = stack.pop()
-      if curr in region:
-        continue
-
-      region.add(curr)
-      curr_value = grid[curr]
-
-      stack.extend(
-          n for n in neighbors(center=curr, num_dirs=4)
-          if grid.get(n) == curr_value and n not in region
-      )
-
-    visited |= region
-    regions.append(region)
-
-  return regions
+    for point in grid:
+        if point not in visited:
+            region = flood_fill(point)
+            visited |= region
+            regions.append(region)
+            
+    return regions
 
 
 def determine_perimiter(point: GridPoint) -> int:
-  return 4 - len([n for n in neighbors(center=point, num_dirs=4) if grid.get(n) == grid.get(point)])
+  return 4 - sum(1 for n in neighbors(center=point, num_dirs=4) if grid.get(n) == grid.get(point))
 
 
 regions = find_regions(grid)
