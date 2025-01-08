@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Optional, Iterator, Union, Dict
 
 class Grid:
@@ -158,6 +159,6 @@ class Grid:
     def from_strings(cls, 
                     raw_grid: list[str], 
                     int_vals: bool = False,
-                    ignore_chars: str = "") -> 'Grid':
+                    ignore_chars: str = "") -> Grid:
         """Create Grid from list of strings."""
         return cls(raw_grid, int_vals=int_vals, ignore_chars=ignore_chars)
