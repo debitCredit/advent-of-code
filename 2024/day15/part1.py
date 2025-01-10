@@ -8,4 +8,5 @@ with open(file) as f:
 
 grid = Grid.from_strings(grid_txt.splitlines())
 
-grid.print()
+
+print(grid.find_first("@"))

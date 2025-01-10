@@ -137,6 +137,10 @@ class Grid:
 
             yield (next_x, next_y)
 
+    def values(self):
+        """Get all values in the grid."""
+        return self.grid.values()
+
     def __getitem__(self, pos: tuple[int, int]) -> Union[str, int]:
         return self.grid[pos]
     
@@ -145,6 +149,23 @@ class Grid:
     
     def __contains__(self, pos: tuple[int, int]) -> bool:
         return pos in self.grid
+    
+    def __iter__(self):
+        return iter(self.grid.items())
+    
+
+    def find_first(self, target: Union[str, int]) -> tuple[int, int] | None:
+        """Find the first occurrence of a value in the grid."""
+        # Use dictionary comprehension with next() and iter()
+        try:
+            return next(pos for pos, val in self.grid.items() if val == target)
+        except StopIteration:
+            return None
+
+    def find_all(self, target: Union[str, int]) -> list[tuple[int, int]]:
+        """Find all occurrences of a value in the grid."""
+        # Use dictionary comprehension
+        return [pos for pos, val in self.grid.items() if val == target]
 
     def print(self, empty_char: str = ".", cell_width: int = 1) -> None:
         """Pretty print the grid."""
