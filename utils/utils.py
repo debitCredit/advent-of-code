@@ -51,14 +51,14 @@ class Grid:
     """
     # Class constants for directions
     CARDINAL_DIRS = [
-        (0, -1),          # North
-        (-1, 0), (1, 0),  # West, East
-        (0, 1),           # South
+        (-1, 0),          # North (decrease row)
+        (0, -1), (0, 1),  # West (decrease col), East (increase col)
+        (1, 0),           # South (increase row)
     ]
 
     DIAGONAL_DIRS = [
-        (-1, -1), (1, -1),  # NW, NE
-        (-1, 1),  (1, 1),   # SW, SE
+        (-1, -1), (-1, 1),  # NW (up-left), NE (up-right)
+        (1, -1),  (1, 1),   # SW (down-left), SE (down-right)
     ]
 
     CENTER = [(0, 0)]
@@ -105,9 +105,9 @@ class Grid:
         return grid
 
     def neighbors(self,
-                 center: tuple[int, int],
-                 num_dirs: int = 8,
-                 ) -> Iterator[tuple[int, int]]:
+                center: tuple[int, int],
+                num_dirs: int = 8,
+                ) -> Iterator[tuple[int, int]]:
         """Get neighboring coordinates within grid bounds.
         
         Args:
@@ -125,17 +125,56 @@ class Grid:
         if num_dirs == 9:
             offsets += self.CENTER
 
-        x, y = center
+        row, col = center
 
-        for dx, dy in offsets:
-            next_x, next_y = x + dx, y + dy
+        for drow, dcol in offsets:
+            next_row, next_col = row + drow, col + dcol
 
-            if next_x < 0 or next_x >= self.width:
+            if next_row < 0 or next_row >= self.height:
                 continue
-            if next_y < 0 or next_y >= self.height:
+            if next_col < 0 or next_col >= self.width:
                 continue
 
-            yield (next_x, next_y)
+            yield (next_row, next_col)
+
+
+    def get_neighbor_value(self, 
+                        pos: tuple[int, int], 
+                        direction: str,
+                        default: Union[str, int, None] = None) -> Union[str, int, None]:
+        """Get the value of a neighbor in a specified direction.
+        
+        Args:
+            pos: (row, col) coordinate to find neighbor for
+            direction: String indicating direction ('N', 'S', 'E', 'W', 'NW', 'NE', 'SW', 'SE')
+            default: Value to return if neighbor is out of bounds or not present
+            
+        Returns:
+            Value of the neighbor in specified direction, or default if not found
+        """
+        direction_map = {
+            'N': (-1, 0),    # Up (decrease row)
+            'S': (1, 0),     # Down (increase row)
+            'W': (0, -1),    # Left (decrease col)
+            'E': (0, 1),     # Right (increase col)
+            'NW': (-1, -1),  # Up-left
+            'NE': (-1, 1),   # Up-right
+            'SW': (1, -1),   # Down-left
+            'SE': (1, 1)     # Down-right
+        }
+        
+        if direction not in direction_map:
+            raise ValueError(f"Invalid direction: {direction}")
+            
+        drow, dcol = direction_map[direction]
+        new_pos = (pos[0] + drow, pos[1] + dcol)
+        
+        # Check if the position is within bounds
+        if (new_pos[0] < 0 or new_pos[0] >= self.height or
+            new_pos[1] < 0 or new_pos[1] >= self.width):
+            return default
+            
+        return self.grid.get(new_pos, default)
 
     def values(self):
         """Get all values in the grid."""
