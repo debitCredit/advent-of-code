@@ -103,6 +103,10 @@ class Grid:
                 grid[row, col] = int(char) if int_vals else char
                 
         return grid
+    
+    def copy(self) -> Grid:
+        return Grid(dict(self.grid), width=self.width, height=self.height)
+
 
     def neighbors(self,
                 center: tuple[int, int],
@@ -195,7 +199,6 @@ class Grid:
 
     def find_first(self, target: Union[str, int]) -> tuple[int, int] | None:
         """Find the first occurrence of a value in the grid."""
-        # Use dictionary comprehension with next() and iter()
         try:
             return next(pos for pos, val in self.grid.items() if val == target)
         except StopIteration:
@@ -203,7 +206,6 @@ class Grid:
 
     def find_all(self, target: Union[str, int]) -> list[tuple[int, int]]:
         """Find all occurrences of a value in the grid."""
-        # Use dictionary comprehension
         return [pos for pos, val in self.grid.items() if val == target]
 
     def print(self, empty_char: str = ".", cell_width: int = 1) -> None:

@@ -17,7 +17,7 @@ def push_boxes(grid: Grid, direction: str) -> Grid:
         New Grid instance (either moved or unchanged if blocked.)
     """
     # Create a new grid with copied state
-    new_grid = Grid(dict(grid.grid), width=grid.width, height=grid.height)
+    new_grid = grid.copy()
     
     # Get player position
     player_pos = new_grid.find_first("@")
@@ -25,10 +25,10 @@ def push_boxes(grid: Grid, direction: str) -> Grid:
         return new_grid
         
     direction_map = {
-        '^': (-1, 0),    # Up (decrease row)
-        'v': (1, 0),     # Down (increase row)
-        '<': (0, -1),    # Left (decrease col)
-        '>': (0, 1),     # Right (increase col)
+        '^': (-1, 0),
+        'v': (1, 0),
+        '<': (0, -1),
+        '>': (0, 1),
     }
     
     if direction not in direction_map:
