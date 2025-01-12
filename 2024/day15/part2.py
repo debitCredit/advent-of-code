@@ -1,5 +1,4 @@
 from utils.utils import Grid
-from collections import defaultdict
 
 # file = "test_input.txt"
 file = "input.txt"
@@ -15,12 +14,7 @@ grid_txt = grid_txt.translate(str.maketrans({
     "@": "@."
 }))
 moves_txt = ''.join(moves_txt.split())
-moves_txt = moves_txt.translate(str.maketrans({
-    "^": "N", 
-    "v": "S",
-    "<": "W",
-    ">": "E"
-}))
+
 
 grid = Grid.from_strings(grid_txt.splitlines())
 
@@ -29,88 +23,61 @@ def push_boxes(grid: Grid, direction: str) -> Grid:
     """Push boxes in specified cardinal direction.
     
     This function simulates movement of boxes and the player ('@') on a grid. 
-    Boxes are represented by '[' and ']' on two adjacent positions. 
-    If a box cannot be pushed further (due to walls or other boxes), 
-    the movement stops, affecting all subsequent pushes in that direction.
-
+    Boxes are represented by '[' and ']' on two adjacent positions.
+    Movement stops if blocked by a wall or another box.
+    
     Args:
         grid: Grid instance containing the game state
-        direction: One of 'N', 'S', 'W', 'E' for north, south, west, east movement
-
+        direction: One of 'N', 'S', 'W', 'E' for cardinal directions
+        
     Returns:
-        New Grid instance (either moved or unchanged if blocked.)
+        New Grid instance with updated positions or unchanged if move is blocked
     """
     new_grid = grid.copy()
     player_pos = grid.find_first('@')
     if not player_pos:
         return grid
-    
-    # Direction offsets
-    direction_map = {
-        'N': (-1, 0),
-        'S': (1, 0),
-        'E': (0, 1),
-        'W': (0, -1)
-    }
-    dx, dy = direction_map[direction]
-    
-    def safe_get(pos):
-        """Safely get grid value, returns None if position is invalid."""
-        row, col = pos
-        if 0 <= row < grid.height and 0 <= col < grid.width and pos in grid:
-            return grid[pos]
-        return None
-    
-    # Find all box positions (as left-right pairs)
-    box_positions = []
+
+    offsets = {'^': (-1, 0), 'v': (1, 0), '>': (0, 1), '<': (0, -1)}
+    dx, dy = offsets[direction]
+
+    # Find all boxes (only need to track left bracket positions)
+    boxes = []
     for row in range(grid.height):
-        for col in range(grid.width-1):
-            if safe_get((row, col)) == '[' and safe_get((row, col+1)) == ']':
-                box_positions.append((row, col))
+        for col in range(grid.width - 1):
+            pos = (row, col)
+            if pos in grid and (row, col + 1) in grid:
+                if grid[pos] == '[' and grid[(row, col + 1)] == ']':
+                    boxes.append(pos)
     
-    # Find all coordinates that need to move
-    coords_to_move = [player_pos]
+    # Calculate which positions need to move
+    to_move = [player_pos]
     i = 0
-    impossible = False
-    
-    # Build list of all coordinates that need to move
-    while i < len(coords_to_move):
-        x, y = coords_to_move[i]
-        nx, ny = x + dx, y + dy
+    while i < len(to_move):
+        curr_row, curr_col = to_move[i]
+        next_row, next_col = curr_row + dx, curr_col + dy
+        next_pos = (next_row, next_col)
         
-        # Check if move is blocked by wall
-        if safe_get((nx, ny)) == '#':
-            impossible = True
-            break
-        
-        # If we hit a box, add both parts
-        for box_row, box_col in box_positions:
-            if (nx, ny) in [(box_row, box_col), (box_row, box_col+1)]:
-                if (box_row + dx, box_col) not in [(p[0], p[1]) for p in coords_to_move]:
-                    coords_to_move.append((box_row, box_col))
-                    coords_to_move.append((box_row, box_col + 1))
+        # Stop if we hit a wall
+        if (next_pos in grid and grid[next_pos] == '#' or 
+            not (0 <= next_row < grid.height and 0 <= next_col < grid.width)):
+            return grid
+            
+        # Check if we hit a box
+        for box_row, box_col in boxes:
+            if next_pos in [(box_row, box_col), (box_row, box_col + 1)]:
+                box_next = (box_row + dx, box_col)
+                if box_next not in [(p[0], p[1]) for p in to_move]:
+                    to_move.extend([(box_row, box_col), (box_row, box_col + 1)])
         i += 1
     
-    # If move is possible, execute it
-    if not impossible:
-        # First clear all moving pieces
-        for x, y in coords_to_move:
-            new_grid[x, y] = '.'
+    for pos in to_move:
+        new_grid[pos] = '.'
+    for pos in to_move:
+        new_pos = (pos[0] + dx, pos[1] + dy)
+        new_grid[new_pos] = grid[pos]
         
-        # Then move all pieces to new positions
-        for x, y in coords_to_move:
-            val = grid[x, y]
-            new_x, new_y = x + dx, y + dy
-            new_grid[new_x, new_y] = val
-    
     return new_grid
-
-def safe_get(grid, pos):
-    """Safely get grid value, returns None if position is invalid."""
-    row, col = pos
-    if 0 <= row < grid.height and 0 <= col < grid.width and pos in grid:
-        return grid[pos]
-    return None
 
 
 moves = list(moves_txt)
