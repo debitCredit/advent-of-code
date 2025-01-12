@@ -6,6 +6,7 @@ file = "input.txt"
 with open(file) as f:
     grid_txt, moves_txt = f.read().split('\n\n')
 
+
 def push_boxes(grid: Grid, direction: str) -> Grid:
     """Push boxes in specified cardinal direction.
     
@@ -76,6 +77,7 @@ def push_boxes(grid: Grid, direction: str) -> Grid:
     new_grid[player_pos] = "."
     
     return new_grid
+
 
 
 grid = Grid.from_strings(grid_txt.splitlines())
