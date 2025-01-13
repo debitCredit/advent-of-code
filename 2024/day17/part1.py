@@ -32,15 +32,15 @@ class Processor:
     def adv(self, operand: int):
         calc_operand = self.combo_operand(operand)
         self.registers["A"] //= 2 ** calc_operand
-        self.inst_pointer += 2
+
 
     def bxl(self, operand: int):
         self.registers["B"] ^= operand
-        self.inst_pointer += 2
+
 
     def bst(self, operand: int):
         self.registers["B"] = self.combo_operand(operand) % 8
-        self.inst_pointer += 2
+
 
     def jnz(self, operand: int):
         if self.registers["A"] != 0:
@@ -48,32 +48,36 @@ class Processor:
         else:
             self.inst_pointer += 2
 
+
     def bxc(self, _):
         self.registers["B"] ^= self.registers["C"]
-        self.inst_pointer += 2
+
 
     def out(self, operand: int):
         calc_operand = self.combo_operand(operand) % 8
         self.output.append(str(calc_operand))
-        self.inst_pointer += 2
+
 
     def bdv(self, operand: int):
         calc_operand = self.combo_operand(operand)
         self.registers["B"] = self.registers["A"] // 2 ** calc_operand
-        self.inst_pointer += 2
+
 
     def cdv(self, operand: int):
         calc_operand = self.combo_operand(operand)
         self.registers["C"] = self.registers["A"] // 2 ** calc_operand
-        self.inst_pointer += 2
+
 
     def run(self):
         while self.inst_pointer < len(self.program):
             opcode = self.program[self.inst_pointer]
             operand = self.program[self.inst_pointer + 1]
             self.func_map[opcode](operand)
+
+            if opcode != 3:
+                self.inst_pointer += 2
         
-        return ",".join(self.output)
+        return self.output
 
 
 def parse_registers_and_program(text):
@@ -87,7 +91,8 @@ def parse_registers_and_program(text):
     return registers, program
 
 
-file = "input.txt"  # or "test_input.txt"
+file = "input.txt"
+# file = "test_input.txt"
 
 with open(file) as f:
     text = f.read()
@@ -95,4 +100,5 @@ with open(file) as f:
 registers, program = parse_registers_and_program(text)
 processor = Processor(registers, program)
 result = processor.run()
-print(result)
+
+print(",".join(result))
